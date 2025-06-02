@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Shawon's educational background and academic achievements" />
+    <meta name="keywords" content="KUET, CSE, computer science, engineering, education, academic" />
+    <title>Education - Portfolio Website</title>
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+      /* General Body Styling */
+      :root {
+        --bg-color: #eef2f6;
+        --text-color: #333;
+        --card-bg: #ffffff;
+        --header-bg: #66cdaa;
+        --footer-bg: #2c3e50;
+        --footer-text: white;
+        --accent-color: #3498db;
+        --hover-color: #ffffff;
+        --thank-you-bg: #e0f7fa;
+        --thank-you-border: #00bcd4;
+        --thank-you-text: #00796b;
+        --timeline-line: #3498db;
+        --timeline-dot: #3498db;
+        --timeline-card: #f9f9f9;
+      }
+      
+      .dark-mode {
+        --bg-color: #1a1a2e;
+        --text-color: #e6e6e6;
+        --card-bg: #16213e;
+        --header-bg: #0f3443;
+        --footer-bg: #0f3443;
+        --footer-text: #e6e6e6;
+        --accent-color: #4cc9f0;
+        --hover-color: #ffffff;
+        --thank-you-bg: #1e3a5f;
+        --thank-you-border: #4cc9f0;
+        --thank-you-text: #4cc9f0;
+        --timeline-line: #4cc9f0;
+        --timeline-dot: #4cc9f0;
+        --timeline-card: #1e2a4a;
+      }
+      
+      body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      /* Header Styling */
+      header {
+        background-color: var(--header-bg);
+        padding: 10px 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: background-color 0.3s ease;
+      }
+
+      /* Navigation Styling */
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      
+      .nav-links {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      nav a {
+        text-decoration: none;
+        font-weight: 600;
+        color: var(--text-color);
+        padding: 8px 15px;
+        transition: color 0.3s ease, background-color 0.3s ease, border-radius 0.3s ease;
+        border-radius: 5px;
+        position: relative;
+      }
+
+      nav a:hover {
+        color: var(--hover-color);
+        background-color: var(--accent-color);
+      }
+
+      nav p {
+        margin: 0;
+      }
+
+      /* Current Page Indicator */
+      nav a.current-page {
+        color: var(--hover-color);
+        background-color: var(--accent-color);
+        pointer-events: none;
+      }
+
+      nav a.current-page::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 3px;
+        background-color: var(--hover-color);
+        border-radius: 2px;
+      }
+      
+      /* Dark Mode Toggle */
+      .theme-toggle {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+        margin-right: 15px;
+        color: var(--text-color);
+        transition: transform 0.3s ease;
+      }
+      
+      .theme-toggle:hover {
+        transform: rotate(30deg);
+      }
+
+      /* Main Content Area */
+      main {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 30px;
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      main h2 {
+        color: var(--text-color);
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        transition: color 0.3s ease;
+      }
+
+      /* Timeline Styling */
+      .timeline {
+        position: relative;
+        max-width: 800px;
+        margin: 40px auto;
+      }
+
+      .timeline::after {
+        content: '';
+        position: absolute;
+        width: 4px;
+        background-color: var(--timeline-line);
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -2px;
+        border-radius: 2px;
+      }
+
+      .timeline-item {
+        padding: 10px 40px;
+        position: relative;
+        width: 50%;
+        box-sizing: border-box;
+        margin-bottom: 30px;
+      }
+
+      .timeline-item::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: var(--timeline-dot);
+        border-radius: 50%;
+        top: 15px;
+        z-index: 1;
+      }
+
+      .timeline-item.left {
+        left: 0;
+        text-align: right;
+      }
+
+      .timeline-item.right {
+        left: 50%;
+        text-align: left;
+      }
+
+      .timeline-item.left::after {
+        right: -10px;
+      }
+
+      .timeline-item.right::after {
+        left: -10px;
+      }
+
+      .timeline-content {
+        padding: 20px;
+        background-color: var(--timeline-card);
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+      }
+
+      .timeline-content h3 {
+        margin-top: 0;
+        color: var(--accent-color);
+        font-size: 1.4em;
+        transition: color 0.3s ease;
+      }
+
+      .timeline-content h4 {
+        margin: 5px 0;
+        color: var(--text-color);
+        font-size: 1.1em;
+        transition: color 0.3s ease;
+      }
+
+      .timeline-content p {
+        margin-bottom: 0;
+        color: var(--text-color);
+        transition: color 0.3s ease;
+      }
+
+      .timeline-date {
+        color: var(--accent-color);
+        font-weight: 600;
+        margin-bottom: 10px;
+        transition: color 0.3s ease;
+      }
+
+      /* Responsive Timeline */
+      @media screen and (max-width: 768px) {
+        .timeline::after {
+          left: 31px;
+        }
+        
+        .timeline-item {
+          width: 100%;
+          padding-left: 70px;
+          padding-right: 25px;
+        }
+        
+        .timeline-item.left, .timeline-item.right {
+          left: 0;
+          text-align: left;
+        }
+        
+        .timeline-item.left::after, .timeline-item.right::after {
+          left: 21px;
+        }
+      }
+
+      /* Thank You Message Styling */
+      .thank-you-message {
+        background-color: var(--thank-you-bg);
+        border-left: 5px solid var(--thank-you-border);
+        padding: 20px;
+        margin-top: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+      }
+
+      .thank-you-message p {
+        margin: 0;
+        font-size: 1.1em;
+        color: var(--thank-you-text);
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+
+      /* Footer Styling */
+      footer {
+        background-color: var(--footer-bg);
+        color: var(--footer-text);
+        text-align: center;
+        padding: 25px 10px;
+        margin-top: 60px;
+        box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      footer p {
+        margin: 5px 0;
+        font-size: 0.95em;
+      }
+
+      footer .social-icons {
+        margin: 15px 0;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      footer .social-icons a {
+        display: inline-block;
+        transition: transform 0.3s ease;
+      }
+
+      footer .social-icons a:hover {
+        transform: translateY(-5px) scale(1.1);
+      }
+
+      footer .social-icons img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 5px;
+        transition: background-color 0.3s ease;
+      }
+      
+      /* Page Transition Animation */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      main {
+        animation: fadeIn 0.6s ease-out;
+      }
+    </style>
+    <script>
+      // Function to toggle dark mode
+      function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        
+        // Save preference to localStorage
+        if (document.body.classList.contains('dark-mode')) {
+          localStorage.setItem('darkMode', 'enabled');
+          document.getElementById('theme-toggle').innerHTML = '☀️';
+        } else {
+          localStorage.setItem('darkMode', 'disabled');
+          document.getElementById('theme-toggle').innerHTML = '🌙';
+        }
+      }
+      
+      // Function to check user preference on page load
+      function checkDarkModePreference() {
+        if (localStorage.getItem('darkMode') === 'enabled') {
+          document.body.classList.add('dark-mode');
+          document.getElementById('theme-toggle').innerHTML = '☀️';
+        } else {
+          document.getElementById('theme-toggle').innerHTML = '🌙';
+        }
+      }
+      
+      // Execute when DOM is fully loaded
+      document.addEventListener('DOMContentLoaded', checkDarkModePreference);
+    </script>
+  </head>
+  <body>
+    <header>
+        <header>
+            <nav>
+              <button id="theme-toggle" class="theme-toggle" onclick="toggleDarkMode()">🌙</button>
+              <div class="nav-links">
+                <a href="home.html"><p>Home</p></a>
+                <a href="projects.html"><p>Projects</p></a>
+                <a href="skills.html"><p>Skills</p></a>
+                <a href="education.html" class="current-page"><p>Education</p></a>
+                <a href="blog.html"><p>Blog</p></a>
+                <a href="certificates.html"><p>Certificates</p></a>
+                <a href="about.html"><p>About</p></a>
+                <a href="contactMe.html"><p>Contact Me</p></a>
+              </div>
+            </nav>
+          </header>
+    </header>
+
+    <main>
+      <h2>My Educational Journey</h2>
+      
+      <div class="timeline">
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-date">2023 - Present</div>
+            <h3>Khulna University of Engineering & Technology (KUET)</h3>
+            <h4>Bachelor of Science in Computer Science and Engineering</h4>
+            <p>Focusing on software development, hardware development, data structures, algorithms, and machine learning</p>
+          </div>
+        </div>
+        
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-date">2020 - 2022</div>
+            <h3>Rajshahi Govt. City College (RGCC)</h3>
+            <h4>Higher Secondary Certificate (HSC)</h4>
+            <h4>Science Group</h4>
+            <p>Achieved GPA 5.00 with excellence in Physics, Mathematics, and Chemistry</p>
+          </div>
+        </div>
+        
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-date">2016 - 2018</div>
+            <h3>Kashira High School (KHS)</h3>
+            <h4>Secondary School Certificate (SSC)</h4>
+            <h4>Science Group</h4>
+            <p>Achieved GPA 5.00 with distinction in all subjects</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="thank-you-message">
+        <p>Education is the foundation of innovation!</p>
+        <p>I'm constantly learning and expanding my knowledge.</p>
+      </div>
+    </main>
+
+    <footer>
+      <p>Made with ❤️ by Shawon</p>
+      <div class="social-icons">
+        <a href="https://github.com/shahidur8381" target="_blank">
+          <img src="assets/logos/github.png" alt="GitHub" />
+        </a>
+        <a href="https://www.linkedin.com/in/shahidur8381" target="_blank">
+          <img src="assets/logos/linkedin.png" alt="LinkedIn" />
+        </a>
+        <a href="mailto:shahidur8381@gmail.com" target="_blank">
+          <img src="assets/logos/email.png" alt="Email" />
+        </a>
+      </div>
+      <p>&copy; 2025 Shawon. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

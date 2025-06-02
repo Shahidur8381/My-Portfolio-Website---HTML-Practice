@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Me - Portfolio Website</title>
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <!--
+      IMPORTANT: Include your emailjs-config.js file AFTER the EmailJS library.
+      This file contains your API keys and should NOT be committed to your public GitHub repository.
+    -->
+    <script src="emailjs-config.js"></script>
+
+    <script>
+      // Ensure all custom JavaScript runs after the DOM is loaded and all necessary scripts are available.
+
+// const EMAILJS_PUBLIC_KEY = "EMAILJS_PUBLIC_KEY";
+//const EMAILJS_SERVICE_ID = "EMAILJS_SERVICE_ID";
+//const EMAILJS_TEMPLATE_ID = "EMAILJS_TEMPLATE_ID";
+
+      
+      // Function to toggle dark mode
+      function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+
+        // Save preference to localStorage
+        if (document.body.classList.contains('dark-mode')) {
+          localStorage.setItem('darkMode', 'enabled');
+          document.getElementById('theme-toggle').innerHTML = '☀️';
+        } else {
+          localStorage.setItem('darkMode', 'disabled');
+          document.getElementById('theme-toggle').innerHTML = '🌙';
+        }
+      }
+
+      // Function to check user preference on page load
+      function checkDarkModePreference() {
+        if (localStorage.getItem('darkMode') === 'enabled') {
+          document.body.classList.add('dark-mode');
+          document.getElementById('theme-toggle').innerHTML = '☀️';
+        } else {
+          document.getElementById('theme-toggle').innerHTML = '🌙';
+        }
+      }
+
+      // Form validation and submission handling
+      function validateForm() {
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const messageInput = document.getElementById('message');
+        const submitButton = document.getElementById('submit-btn');
+
+        // Simple email validation regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Check if all fields are valid
+        const isValid =
+          nameInput.value.trim().length > 0 &&
+          emailRegex.test(emailInput.value.trim()) &&
+          messageInput.value.trim().length > 10;
+
+        // Update button state
+        submitButton.disabled = !isValid;
+        submitButton.classList.toggle('btn-disabled', !isValid);
+
+        return isValid;
+      }
+
+      function sendEmail(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Show loading state
+        const submitButton = document.getElementById('submit-btn');
+        const originalText = submitButton.innerHTML;
+        submitButton.innerHTML = 'Sending...';
+        submitButton.disabled = true;
+
+        // Send the form data using EmailJS
+        // Use the service ID and template ID from the emailjs-config.js file
+        emailjs
+          .sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, event.target)
+          .then(
+            function (response) {
+              // Success callback
+              showNotification('Message sent successfully!', 'success');
+              event.target.reset(); // Clear the form fields
+              submitButton.innerHTML = originalText;
+              submitButton.disabled = false;
+              // Re-validate the form after reset to disable the button if fields are empty
+              validateForm();
+            },
+            function (error) {
+              // Error callback
+              showNotification('Failed to send message. Please try again later.', 'error');
+              console.log("FAILED...", error); // Log the error for debugging
+              submitButton.innerHTML = originalText;
+              submitButton.disabled = false;
+            }
+          );
+      }
+
+      // Show notification function
+      function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+          notification.classList.add('show');
+        }, 10);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 300);
+        }, 3000);
+      }
+
+      // Add event listeners when DOM is loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize EmailJS here, after emailjs-config.js is guaranteed to be loaded
+        if (typeof EMAILJS_PUBLIC_KEY !== 'undefined') {
+            emailjs.init(EMAILJS_PUBLIC_KEY);
+        } else {
+            console.error("EMAILJS_PUBLIC_KEY is not defined. Ensure emailjs-config.js is loaded correctly.");
+        }
+
+        const form = document.getElementById('contact-form');
+        const inputs = form.querySelectorAll('input, textarea');
+
+        // Add input event listeners to all form fields
+        inputs.forEach(input => {
+          input.addEventListener('input', validateForm);
+        });
+
+        // Initial validation
+        validateForm();
+
+        // Check dark mode preference
+        checkDarkModePreference();
+      });
+    </script>
+    <style>
+      /* General Body Styling */
+      :root {
+        --bg-color: #eef2f6;
+        --text-color: #333;
+        --card-bg: #ffffff;
+        --header-bg: #66cdaa;
+        --footer-bg: #2c3e50;
+        --footer-text: white;
+        --accent-color: #3498db;
+        --hover-color: #ffffff;
+        --thank-you-bg: #e0f7fa;
+        --thank-you-border: #00bcd4;
+        --thank-you-text: #00796b;
+        --form-bg: #f9f9f9;
+        --form-border: #dcdcdc;
+        --form-focus: rgba(52, 152, 219, 0.2);
+        --button-bg: #3498db;
+        --button-hover: #2980b9;
+        --notification-success: #2ecc71;
+        --notification-error: #e74c3c;
+      }
+
+      .dark-mode {
+        --bg-color: #1a1a2e;
+        --text-color: #e6e6e6;
+        --card-bg: #16213e;
+        --header-bg: #0f3443;
+        --footer-bg: #0f3443;
+        --footer-text: #e6e6e6;
+        --accent-color: #4cc9f0;
+        --hover-color: #ffffff;
+        --thank-you-bg: #1e3a5f;
+        --thank-you-border: #4cc9f0;
+        --thank-you-text: #4cc9f0;
+        --form-bg: #1e2a4a;
+        --form-border: #2c3e50;
+        --form-focus: rgba(76, 201, 240, 0.2);
+        --button-bg: #4cc9f0;
+        --button-hover: #3a9dc0;
+        --notification-success: #2ecc71;
+        --notification-error: #e74c3c;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      /* Header Styling */
+      header {
+        background-color: var(--header-bg);
+        padding: 10px 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: background-color 0.3s ease;
+      }
+
+      /* Navigation Styling */
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .nav-links {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      nav a {
+        text-decoration: none;
+        font-weight: 600;
+        color: var(--text-color);
+        padding: 8px 15px;
+        transition: color 0.3s ease, background-color 0.3s ease, border-radius 0.3s ease;
+        border-radius: 5px;
+        position: relative;
+      }
+
+      nav a:hover {
+        color: var(--hover-color);
+        background-color: var(--accent-color);
+      }
+
+      nav p {
+        margin: 0;
+      }
+
+      /* Current Page Indicator */
+      nav a.current-page {
+        color: var(--hover-color);
+        background-color: var(--accent-color);
+        pointer-events: none;
+      }
+
+      nav a.current-page::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 3px;
+        background-color: var(--hover-color);
+        border-radius: 2px;
+      }
+
+      /* Dark Mode Toggle */
+      .theme-toggle {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+        margin-right: 15px;
+        color: var(--text-color);
+        transition: transform 0.3s ease;
+      }
+
+      .theme-toggle:hover {
+        transform: rotate(30deg);
+      }
+
+      /* Main Content Area */
+      main {
+        text-align: center;
+        padding: 20px;
+        max-width: 900px;
+        margin: 40px auto;
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      main h2 {
+        color: var(--text-color);
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        transition: color 0.3s ease;
+      }
+
+      /* Form Styling */
+      form {
+        max-width: 450px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: var(--form-bg);
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      form input[type="text"],
+      form input[type="email"],
+      form textarea {
+        padding: 12px;
+        border: 1px solid var(--form-border);
+        border-radius: 6px;
+        font-size: 1.05em;
+        width: calc(100% - 24px);
+        box-sizing: border-box;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        background-color: var(--card-bg);
+        color: var(--text-color);
+      }
+
+      form input[type="text"]:focus,
+      form input[type="email"]:focus,
+      form textarea:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px var(--form-focus);
+        outline: none;
+      }
+
+      form textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      form button[type="submit"] {
+        background-color: var(--button-bg);
+        color: white;
+        padding: 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.15em;
+        font-weight: 700;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      form button[type="submit"]:hover:not(:disabled) {
+        background-color: var(--button-hover);
+        transform: translateY(-2px);
+      }
+
+      /* Form validation styles */
+      input:invalid, textarea:invalid {
+        border-color: var(--notification-error);
+      }
+
+      .btn-disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      /* Notification styles */
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 5px;
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        transform: translateX(120%);
+        transition: transform 0.3s ease;
+        z-index: 1001;
+      }
+
+      .notification.show {
+        transform: translateX(0);
+      }
+
+      .notification.success {
+        background-color: var(--notification-success);
+      }
+
+      .notification.error {
+        background-color: var(--notification-error);
+      }
+
+      /* Thank You Message Styling */
+      .thank-you-message {
+        background-color: var(--thank-you-bg);
+        border-left: 5px solid var(--thank-you-border);
+        max-width: 510px;
+        margin: 40px auto;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+      }
+
+      .thank-you-message p {
+        margin: 0;
+        font-size: 1.1em;
+        color: var(--thank-you-text);
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+
+      /* Footer Styling */
+      footer {
+        background-color: var(--footer-bg);
+        color: var(--footer-text);
+        text-align: center;
+        padding: 25px 10px;
+        margin-top: 60px;
+        box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      footer p {
+        margin: 5px 0;
+        font-size: 0.95em;
+      }
+
+      footer .social-icons {
+        margin: 15px 0;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      footer .social-icons a {
+        display: inline-block;
+        transition: transform 0.3s ease;
+      }
+
+      footer .social-icons a:hover {
+        transform: translateY(-5px) scale(1.1);
+      }
+
+      footer .social-icons img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      /* Page Transition Animation */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      main {
+        animation: fadeIn 0.6s ease-out;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <button id="theme-toggle" class="theme-toggle" onclick="toggleDarkMode()">🌙</button>
+        <div class="nav-links">
+          <a href="home.html"><p>Home</p></a>
+          <a href="projects.html"><p>Projects</p></a>
+          <a href="skills.html"><p>Skills</p></a>
+          <a href="education.html"><p>Education</p></a>
+          <a href="blog.html"><p>Blog</p></a>
+          <a href="certificates.html"><p>Certificates</p></a>
+          <a href="about.html"><p>About</p></a>
+          <a href="contactMe.html" class="current-page"><p>Contact Me</p></a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <h2>Contact Me</h2>
+      <form id="contact-form" onsubmit="sendEmail(event)">
+        <input
+          type="text"
+          name="name"
+          id="name"
+          placeholder="Your Name"
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="Your Email"
+          required
+        />
+        <textarea
+          name="message"
+          id="message"
+          placeholder="Your Message"
+          required
+          rows="5"
+        ></textarea>
+        <button type="submit" id="submit-btn">Send</button>
+      </form>
+      <div class="thank-you-message">
+        <p>Ready to send your message?</p>
+        <p>I'm looking forward to hearing from you!</p>
+      </div>
+    </main>
+
+    <footer>
+      <p>Made with ❤️ by Shawon</p>
+      <div class="social-icons">
+        <a href="https://github.com/shahidur8381" target="_blank">
+          <img src="assets/logos/github.png" alt="GitHub" />
+        </a>
+        <a href="https://www.linkedin.com/in/shahidur8381" target="_blank">
+          <img src="assets/logos/linkedin.png" alt="LinkedIn" />
+        </a>
+        <a href="mailto:shahidur8381@gmail.com" target="_blank">
+          <img src="assets/logos/email.png" alt="Email" />
+        </a>
+      </div>
+      <p>&copy; 2025 Shawon. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

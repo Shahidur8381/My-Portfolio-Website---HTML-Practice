@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="View Shawon's portfolio of web development and programming projects" />
+    <title>Projects - Portfolio Website</title>
+    <link rel="icon" type="image/png" href="images/favicon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+      /* General Body Styling */
+      :root {
+        --bg-color: #eef2f6;
+        --text-color: #333;
+        --card-bg: #ffffff;
+        --header-bg: #66cdaa;
+        --footer-bg: #2c3e50;
+        --footer-text: white;
+        --accent-color: #3498db;
+        --hover-color: #ffffff;
+        --thank-you-bg: #e0f7fa;
+        --thank-you-border: #00bcd4;
+        --thank-you-text: #00796b;
+      }
+      
+      .dark-mode {
+        --bg-color: #1a1a2e;
+        --text-color: #e6e6e6;
+        --card-bg: #16213e;
+        --header-bg: #0f3443;
+        --footer-bg: #0f3443;
+        --footer-text: #e6e6e6;
+        --accent-color: #4cc9f0;
+        --hover-color: #ffffff;
+        --thank-you-bg: #1e3a5f;
+        --thank-you-border: #4cc9f0;
+        --thank-you-text: #4cc9f0;
+      }
+      
+      body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      /* Header Styling */
+      header {
+        background-color: var(--header-bg);
+        padding: 10px 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: background-color 0.3s ease;
+      }
+
+      /* Navigation Styling */
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      
+      .nav-links {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      nav a {
+        text-decoration: none;
+        font-weight: 600;
+        color: var(--text-color);
+        padding: 8px 15px;
+        transition: color 0.3s ease, background-color 0.3s ease, border-radius 0.3s ease;
+        border-radius: 5px;
+        position: relative;
+      }
+
+      nav a:hover {
+        color: var(--hover-color);
+        background-color: var(--accent-color);
+      }
+
+      nav p {
+        margin: 0;
+      }
+
+      /* Current Page Indicator */
+      nav a.current-page {
+        color: var(--hover-color);
+        background-color: var(--accent-color);
+        pointer-events: none;
+      }
+
+      nav a.current-page::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 3px;
+        background-color: var(--hover-color);
+        border-radius: 2px;
+      }
+      
+      /* Dark Mode Toggle */
+      .theme-toggle {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+        margin-right: 15px;
+        color: var(--text-color);
+        transition: transform 0.3s ease;
+      }
+      
+      .theme-toggle:hover {
+        transform: rotate(30deg);
+      }
+
+      /* Project Grid Styling */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+        width: 100%;
+        margin-top: 20px;
+      }
+      
+      .project-card {
+        background-color: var(--card-bg);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      
+      .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      }
+      
+      .project-image {
+        font-size: 3em;
+        padding: 20px;
+        background-color: var(--accent-color);
+        color: white;
+        text-align: center;
+      }
+      
+      .project-content {
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .project-content h3 {
+        margin-top: 0;
+        color: var(--text-color);
+        font-size: 1.4em;
+      }
+      
+      .project-content p {
+        font-size: 0.95em;
+        margin-bottom: 15px;
+        color: var(--text-color);
+        text-align: left;
+      }
+      
+      .project-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 15px;
+      }
+      
+      .project-tag {
+        background-color: var(--accent-color);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 15px;
+        font-size: 0.8em;
+        font-weight: 600;
+      }
+      
+      .project-links {
+        margin-top: auto;
+        display: flex;
+        gap: 15px;
+      }
+      
+      .project-links a {
+        text-decoration: none;
+        color: var(--accent-color);
+        font-weight: 600;
+        transition: color 0.3s ease;
+        padding: 5px 10px;
+        border: 2px solid var(--accent-color);
+        border-radius: 5px;
+      }
+      
+      .project-links a:hover {
+        background-color: var(--accent-color);
+        color: white;
+      }
+      
+      /* Main Content Area */
+      main {
+        flex-grow: 1;
+        padding: 30px;
+        max-width: 1100px;
+        margin: 40px auto;
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      main h2 {
+        color: var(--text-color);
+        margin-bottom: 30px;
+        font-size: 2.2em;
+        text-align: center;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .projects-grid {
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      
+      /* Thank You Message Styling */
+      .thank-you-message {
+        background-color: var(--thank-you-bg);
+        border-left: 5px solid var(--thank-you-border);
+        padding: 20px;
+        margin-top: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+      }
+
+      .thank-you-message p {
+        margin: 0;
+        font-size: 1.1em;
+        color: var(--thank-you-text);
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+
+      /* Responsive font size for "Coming Soon!!!" */
+      @media (max-width: 768px) {
+        main p {
+          font-size: 3em;
+        }
+      }
+
+      @media (max-width: 480px) {
+        main p {
+          font-size: 2em;
+        }
+      }
+
+      /* Footer Styling */
+      footer {
+        background-color: var(--footer-bg);
+        color: var(--footer-text);
+        text-align: center;
+        padding: 25px 10px;
+        margin-top: auto;
+        box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      footer p {
+        margin: 5px 0;
+        font-size: 0.95em;
+      }
+
+      footer .social-icons {
+        margin: 15px 0;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      footer .social-icons a {
+        display: inline-block;
+        transition: transform 0.3s ease;
+      }
+
+      footer .social-icons a:hover {
+        transform: translateY(-5px) scale(1.1);
+      }
+
+      footer .social-icons img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 5px;
+        transition: background-color 0.3s ease;
+      }
+      
+      /* Page Transition Animation */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      main {
+        animation: fadeIn 0.6s ease-out;
+      }
+    </style>
+    <script>
+      // Function to toggle dark mode
+      function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        
+        // Save preference to localStorage
+        if (document.body.classList.contains('dark-mode')) {
+          localStorage.setItem('darkMode', 'enabled');
+          document.getElementById('theme-toggle').innerHTML = '☀️';
+        } else {
+          localStorage.setItem('darkMode', 'disabled');
+          document.getElementById('theme-toggle').innerHTML = '🌙';
+        }
+      }
+      
+      // Function to check user preference on page load
+      function checkDarkModePreference() {
+        if (localStorage.getItem('darkMode') === 'enabled') {
+          document.body.classList.add('dark-mode');
+          document.getElementById('theme-toggle').innerHTML = '☀️';
+        } else {
+          document.getElementById('theme-toggle').innerHTML = '🌙';
+        }
+      }
+      
+      // Execute when DOM is fully loaded
+      document.addEventListener('DOMContentLoaded', checkDarkModePreference);
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <button id="theme-toggle" class="theme-toggle" onclick="toggleDarkMode()">🌙</button>
+        <div class="nav-links">
+          <a href="home.html"><p>Home</p></a>
+          <a href="projects.html" class="current-page"><p>Projects</p></a>
+          <a href="skills.html"><p>Skills</p></a>
+          <a href="education.html"><p>Education</p></a>
+          <a href="blog.html"><p>Blog</p></a>
+          <a href="certificates.html"><p>Certificates</p></a>
+          <a href="about.html"><p>About</p></a>
+          <a href="contactMe.html"><p>Contact Me</p></a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <h2>My Projects</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-image">🌐</div>
+          <div class="project-content">
+            <h3>Personal Portfolio Website</h3>
+            <p>A responsive portfolio website built with HTML, CSS, and JavaScript to showcase my skills and projects.</p>
+            <div class="project-tags">
+              <span class="project-tag">HTML</span>
+              <span class="project-tag">CSS</span>
+              <span class="project-tag">JavaScript</span>
+            </div>
+            <div class="project-links">
+              <a href="home.html" target="_blank">Demo</a>
+              <a href="https://github.com/Shahidur8381/My-Portfolio-Website---HTML-Practice" target="_blank">Code</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-card">
+          <div class="project-image">📝</div>
+          <div class="project-content">
+            <h3>NotePAD App</h3>
+            <p> A full-stack note-taking and sharing application built with HTML, CSS, and JavaScript on the frontend, and Flask with SQLite on the backend.</p>
+            <div class="project-tags">
+              <span class="project-tag">React</span>
+              <span class="project-tag">Node.js</span>
+              <span class="project-tag">MongoDB</span>
+            </div>
+            <div class="project-links">
+              <a href="https://notepad-collaborative-note-taking-web-app.onrender.com/ " target="_blank">Demo</a>
+              <a href="https://github.com/Shahidur8381/NotePAD---Collaborative-Note-Taking-Web-App" target="_blank">Code</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-card">
+          <div class="project-image">📊</div>
+          <div class="project-content">
+            <h3>Data Visualization Dashboard</h3>
+            <p>An interactive dashboard that visualizes complex datasets using charts, graphs, and filterable components.</p>
+            <div class="project-tags">
+              <span class="project-tag">D3.js</span>
+              <span class="project-tag">React</span>
+              <span class="project-tag">Python</span>
+            </div>
+            <div class="project-links">
+              <a href="#" target="_blank">Demo</a>
+              <a href="https://github.com/shahidur8381" target="_blank">Code</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="thank-you-message">
+        <p>Thanks for exploring my projects!</p>
+        <p>More projects are being added regularly.</p>
+      </div>
+    </main>
+
+    <footer>
+      <p>Made with ❤️ by Shawon</p>
+      <div class="social-icons">
+        <a href="https://github.com/shahidur8381" target="_blank">
+          <img src="assets/logos/github.png" alt="GitHub" />
+        </a>
+        <a href="https://www.linkedin.com/in/shahidur8381" target="_blank">
+          <img src="assets/logos/linkedin.png" alt="LinkedIn" />
+        </a>
+        <a href="mailto:shahidur8381@gmail.com" target="_blank">
+          <img src="assets/logos/email.png" alt="Email" />
+        </a>
+      </div>
+      <p>&copy; 2025 Shawon. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
